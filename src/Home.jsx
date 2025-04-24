@@ -88,31 +88,31 @@ const Home = () => {
                 {error && <p className="text-red-500">Something went wrong. Please try again.</p>}
 
                 {result?.foods?.[0] ? (
-                    <div className="w-full md:w-full max-w-2xl mx-auto pt-6 mb-4">
-                    <h3 className="text-xl font-bold text-center bg-gray-200 p-3">
-                      {result.foods[0].description}
-                    </h3>
-                    <div className="overflow-x-auto border border-gray-200">
-                      <table className="w-full table-auto">
-                        <thead className="bg-gray-100">
-                          <tr>
-                            <th className="px-4 py-2 text-left border-b">Nutrient</th>
-                            <th className="px-4 py-2 text-left border-b">Value</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {result.foods[0].foodNutrients?.map((nutrient, index) => (
-                            <tr key={index} className="hover:bg-gray-50">
-                              <td className="px-4 py-2 border-b">{nutrient.nutrientName}</td>
-                              <td className="px-4 py-2 border-b">
-                                {nutrient.value ?? 'N/A'} {nutrient.unitName}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                    <div className="w-full md:w-full max-w-2xl pt-6 mb-6">
+                        <h3 className="text-xl font-bold text-center bg-gray-200 p-3">
+                            {result.foods[0].description}
+                        </h3>
+                        <div className="overflow-x-auto border border-gray-200">
+                            <table className="w-full table-auto">
+                                <thead className="bg-gray-100">
+                                    <tr>
+                                        <th className="px-4 py-2 text-left border-b">Nutrient</th>
+                                        <th className="px-4 py-2 text-left border-b">Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {result.foods[0].foodNutrients?.map((nutrient, index) => (
+                                        <tr key={index} className="hover:bg-gray-50">
+                                            <td className="px-4 py-2 border-b">{nutrient.nutrientName}</td>
+                                            <td className="px-4 py-2 border-b">
+                                                {nutrient.value ?? 'N/A'} {nutrient.unitName}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                  </div>                  
                 ) : (
                     <p className="p-4"></p>
                 )}
