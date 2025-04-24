@@ -45,23 +45,26 @@ const Home = () => {
 
 
     return (
-        <div className='container'>
-            <div className='flex justify-between'>
-                <div className='p-4 pt-8 w-1/2 text-slate-800'>
-                    <h2 className='text-lg font-semibold'>Wellcome to.</h2>
-                    <h1 className='text-4xl font-bold'>Food Nutrient</h1>
-                    <h2 className='text-lg font-semibold'>Eat Better – Check Your Food First!</h2>
-                    <p className='mt-8'>Discover healthy recipes and check food nutrients in one place! Our easy-to-use web app helps you find delicious meals while tracking calories, vitamins, and minerals. Make smarter eating choices with real-time nutrition info. Perfect for health-conscious users, meal planners, and fitness lovers. Start your journey to better eating today—quick, simple, and accurate!</p>
+        <div className='container overflow-hidden'>
+            <div className="flex flex-col-reverse md:flex-row justify-between items-center">
+                <div className="p-4 pt-8 md:w-1/2 text-slate-800 text-center md:text-left">
+                    <h2 className="text-lg font-semibold">Welcome to.</h2>
+                    <h1 className="text-4xl font-bold">Food Nutrient</h1>
+                    <h2 className="text-lg font-semibold">Eat Better – Check Your Food First!</h2>
+                    <p className="mt-8">
+                        Discover healthy recipes and check food nutrients in one place! Our easy-to-use web app helps you find delicious meals while tracking calories, vitamins, and minerals. Make smarter eating choices with real-time nutrition info. Perfect for health-conscious users, meal planners, and fitness lovers. Start your journey to better eating today—quick, simple, and accurate!
+                    </p>
                 </div>
-                <div className=''>
-                    <img className='w-1/2 m-auto' src="hero_pic.png" alt="picture of netrient of foods" />
+                <div className="md:w-1/2 w-full flex justify-center">
+                    <img className="w-[26rem] max-w-md md:max-w-full" src="hero_pic.png" alt="picture of nutrient of foods" />
                 </div>
             </div>
+
 
             <div className='container'>
                 <form
                     onSubmit={handleSubmit}
-                    className="flex px-4 py-3 rounded-md border-2 border-slate-400 overflow-hidden max-w-md focus-within:border-slate-600"
+                    className="flex max-w-md md:w-full px-4 py-3 rounded-md border-2 border-slate-400 overflow-hidden focus-within:border-slate-600"
                 >
                     <input
                         type="text"
@@ -76,35 +79,40 @@ const Home = () => {
                         </svg>
                     </button>
                 </form>
+
             </div>
 
             {/* Response */}
             <div className="mt-6 px-4">
-                {loading && <img src='loading.gif' className='w-56 rounded-full m-auto mb-2' />}
+                {loading && <img src='loading.gif' className='w-56 rounded-full m-auto mb-3' />}
                 {error && <p className="text-red-500">Something went wrong. Please try again.</p>}
 
                 {result?.foods?.[0] ? (
-                    <div className="pt-6 w-1/2 mb-4">
-                        <h3 className="text-xl font-bold text-center bg-gray-200 p-3">{result.foods[0].description}</h3>
-                        <table className="w-full table-auto border border-gray-200">
-                            <thead className="bg-gray-100">
-                                <tr>
-                                    <th className="px-4 py-2 text-left border-b">Nutrient</th>
-                                    <th className="px-4 py-2 text-left border-b">Value</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {result.foods[0].foodNutrients?.map((nutrient, index) => (
-                                    <tr key={index} className="hover:bg-gray-50">
-                                        <td className="px-4 py-2 border-b">{nutrient.nutrientName}</td>
-                                        <td className="px-4 py-2 border-b">
-                                            {nutrient.value ?? 'N/A'} {nutrient.unitName}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                    <div className="w-full md:w-full max-w-2xl mx-auto pt-6 mb-4">
+                    <h3 className="text-xl font-bold text-center bg-gray-200 p-3">
+                      {result.foods[0].description}
+                    </h3>
+                    <div className="overflow-x-auto border border-gray-200">
+                      <table className="w-full table-auto">
+                        <thead className="bg-gray-100">
+                          <tr>
+                            <th className="px-4 py-2 text-left border-b">Nutrient</th>
+                            <th className="px-4 py-2 text-left border-b">Value</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {result.foods[0].foodNutrients?.map((nutrient, index) => (
+                            <tr key={index} className="hover:bg-gray-50">
+                              <td className="px-4 py-2 border-b">{nutrient.nutrientName}</td>
+                              <td className="px-4 py-2 border-b">
+                                {nutrient.value ?? 'N/A'} {nutrient.unitName}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
                     </div>
+                  </div>                  
                 ) : (
                     <p className="p-4"></p>
                 )}

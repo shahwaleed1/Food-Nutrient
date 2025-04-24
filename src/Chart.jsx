@@ -1,80 +1,81 @@
-// import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
-
-// const Chart = ({ nutrients }) => {
-//     // Filter only nutrients that have a value
-//     const chartData = nutrients.map((item) => ({
-//         name: item.nutrientName,
-//         value: item.value,
-//     }));
-
-//     return (
-//         <div className="w-full h-96 p-4">
-//             <ResponsiveContainer width="100%" height="100%">
-//                 <BarChart data={chartData}>
-//                     <XAxis dataKey="name" tick={{ fontSize: 10 }} interval={0} angle={-45} textAnchor="end" height={100} />
-//                     <YAxis />
-//                     <Tooltip />
-//                     <Bar dataKey="value" fill="#4f46e5" />
-//                 </BarChart>
-//             </ResponsiveContainer>
-//         </div>
-//     );
-// };
-
-// // Usage
-// {
-//     result?.foods?.[0] && (
-//         <>
-//             <h3 className="text-xl font-bold mb-4">{result.foods[0].description}</h3>
-//             <Chart nutrients={result.foods[0].foodNutrients} />
-//         </>
-//     )
-// }
-
-
-// export default Chart;
-
-
-
-
-
 import React, { useEffect, useState } from 'react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
-import dotenv from 'dotenv'
-
-dotenv.config
+import { PieChart, Pie, Tooltip, Cell, ResponsiveContainer } from 'recharts';
+import axios from 'axios';
 
 const apiKey = import.meta.env.VITE_API_KEY;
 
-export default function App() {
+const COLORS = ['#4F46E5', '#6366F1', '#818CF8', '#A5B4FC', '#C7D2FE', '#E0E7FF'];
+
+// Custom label with nutrient name and value
+const renderCustomLabel = ({ name, value }) => `${name}: ${value}`;
+
+export default function Chart() {
+    const [query, setQuery] = useState('apple');
+    const [inputValue, setInputValue] = useState('apple');
     const [result, setResult] = useState(null);
 
-    useEffect(() => {
-        // Simulate fetching from API
-        fetch(`https://api.nal.usda.gov/fdc/v1/foods/search?query=${query}&api_key=${apiKey}`)
-            .then(res => res.json())
-            .then(data => setResult(data))
+    const fetchData = () => {
+        if (!inputValue.trim()) return;
+        axios
+            .get(`https://api.nal.usda.gov/fdc/v1/foods/search?query=${inputValue}&api_key=${apiKey}`)
+            .then(res => {
+                setResult(res.data);
+                setQuery(inputValue);
+            })
             .catch(err => console.error('Error fetching data:', err));
-    }, []);
+    };
 
-    const nutrientData = result?.foods?.[0]?.foodNutrients.map(nutrient => ({
-        name: nutrient.nutrientName,
-        value: nutrient.value ?? 0,
-    })) || [];
+    useEffect(() => {
+        fetchData();
+    }, []); // fetch once on mount with default "apple"
+
+    const nutrientData =
+        result?.foods?.[0]?.foodNutrients
+            ?.filter(n => n.value > 0)
+            ?.map(nutrient => ({
+                name: nutrient.nutrientName,
+                value: nutrient.value ?? 0,
+            })) || [];
 
     return (
         <div className="p-4 max-w-4xl mx-auto">
+            <div className="flex gap-2 mb-4">
+                <input
+                    type="text"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    placeholder="Enter food item (e.g., banana)"
+                    className="border p-2 rounded w-full"
+                />
+                <button
+                    onClick={fetchData}
+                    className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
+                >
+                    Search
+                </button>
+            </div>
+
             {result ? (
                 <>
                     <h2 className="text-2xl font-bold mb-4">{result.foods[0].description}</h2>
 
-                    <ResponsiveContainer width="100%" height={400}>
-                        <BarChart data={nutrientData}>
-                            <XAxis dataKey="name" hide />
-                            <YAxis />
+                    <ResponsiveContainer width="100%" height={500}>
+                        <PieChart>
+                            <Pie
+                                data={nutrientData}
+                                dataKey="value"
+                                nameKey="name"
+                                cx="50%"
+                                cy="50%"
+                                outerRadius={180}
+                                label={renderCustomLabel}
+                            >
+                                {nutrientData.map((_, index) => (
+                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                ))}
+                            </Pie>
                             <Tooltip />
-                            <Bar dataKey="value" fill="#4F46E5" />
-                        </BarChart>
+                        </PieChart>
                     </ResponsiveContainer>
                 </>
             ) : (
