@@ -1,0 +1,27 @@
+.marquee-wrapper {
+    width: 100%;
+  }
+  
+  .marquee-content {
+    display: flex;
+    width: fit-content;
+    animation: marquee 20s linear infinite;
+    align-items: center;
+  }
+  
+  
+  /* Keyframes for moving left */
+  @keyframes marquee {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+
+  .marquee-wrapper:hover .marquee-content {
+    animation-play-state: paused;
+  }
+  
+  

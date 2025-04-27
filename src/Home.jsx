@@ -2,6 +2,7 @@ import axios from 'axios'
 import dotenv from 'dotenv'
 import React, { useEffect, useState } from 'react'
 import Chart from './Chart'
+import Marquee from './Marquee'
 
 const Home = () => {
 
@@ -80,6 +81,10 @@ const Home = () => {
                     </button>
                 </form>
 
+            </div>
+
+            <div className='mt-6'>
+                <Marquee />
             </div>
 
             {/* Response */}

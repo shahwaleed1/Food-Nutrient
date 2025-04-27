@@ -3,7 +3,7 @@
     overflow: hidden;
   }
   
-  .marquee-content {
+  .marquee-content-nav {
     width: 100%;
     white-space: nowrap;
     animation: scroll-left 15s linear infinite;
@@ -18,7 +18,7 @@
     }
   }
 
-  .marquee:hover .marquee-content {
+  .marquee:hover .marquee-content-nav {
     animation-play-state: paused;
   }
   
