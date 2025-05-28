@@ -6,6 +6,12 @@ import Marquee from './Marquee'
 
 const Home = () => {
 
+    const images = [
+        '/hero_pic.png',
+        '/hero_pic_1.png'
+    ]
+
+    const [currentIndex, setCurrentIndex] = useState(0)
     const [result, setResult] = useState([])
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
@@ -44,6 +50,14 @@ const Home = () => {
         }
     };
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentIndex(prev => (prev + 1) % images.length);
+        }, 10000); // 20000ms = 20s
+
+        return () => clearInterval(interval); // cleanup on unmount
+    }, []);
+
 
     return (
         <div className='container overflow-hidden'>
@@ -57,7 +71,7 @@ const Home = () => {
                     </p>
                 </div>
                 <div className="md:w-1/2 w-full flex justify-center">
-                    <img className="w-[26rem] max-w-md md:max-w-full" src="hero_pic.png" alt="picture of nutrient of foods" />
+                    <img className="w-[26rem] max-w-md md:max-w-full" src={images[currentIndex]} alt="picture of nutrient of foods" />
                 </div>
             </div>
 
